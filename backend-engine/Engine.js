@@ -21,7 +21,7 @@
  * The Helicity.ai Team 🚀
  */
 
-import { Renderer } from "./Renderer.js";
+import { Renderer as EngineRenderer } from "./Renderer.js";
 import { Input } from "./Input.js";
 
 export class Engine {
@@ -48,7 +48,7 @@ export class Engine {
     this.lastTime = time;
 
     // Clear the canvas before rendering the new frame
-    Renderer.clear();
+    EngineRenderer.clear();
 
     // Update and render game objects
     for (let obj of this.gameObjects) {
