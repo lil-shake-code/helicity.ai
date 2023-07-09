@@ -27,6 +27,9 @@ import { Renderer } from "./Renderer.js";
 var savedImages = {};
 
 export class GameObject {
+  xscale = 1;
+  yscale = 1;
+  alpha = 1;
   constructor(x, y, width, height, type, imageSrc) {
     this.x = x;
     this.y = y;
@@ -95,15 +98,27 @@ export class GameObject {
   }
 
   render() {
-    //draw a black rectangle
     if (this.image.loaded) {
-      Renderer.drawImage(this.image, this.x, this.y, this.width, this.height);
+      Renderer.drawImage(
+        this.image,
+        this.x,
+        this.y,
+        this.width * this.xscale,
+        this.height * this.yscale,
+        this.angle,
+        this.alpha
+      );
     } else {
-      //random colour out of dark blue , red , green , purple , black
-      Renderer.context.fillStyle =
-        "hsl(" + Math.random() * 360 + ", 100%, 50%)";
-
-      Renderer.context.fillRect(this.x, this.y, this.width, this.height);
+      //draw a black rectangle with   xscale yscale at the right angle and alpha
+      Renderer.drawBlock(
+        "black",
+        this.x,
+        this.y,
+        this.width * this.xscale,
+        this.height * this.yscale,
+        this.angle,
+        this.alpha
+      );
     }
   }
 }

@@ -21,7 +21,7 @@
  * The Helicity.ai Team 🚀
  */
 
-export class Renderer {
+class RendererClass {
   constructor() {
     this.canvas = document.getElementById("myCanvas");
     //change canvas size to 1280x720
@@ -34,8 +34,27 @@ export class Renderer {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
-  drawImage(image, x, y, width, height) {
-    this.context.drawImage(image, x, y, width, height);
+  drawImage(image, x, y, width, height, angle, alpha) {
+    //draw an image on the cavas at x, y with width and height and rotation angle and alpha
+    //origin is not at the center of the image, but at the top left corner
+    this.context.save();
+    this.context.translate(x, y);
+    this.context.rotate(-angle);
+    this.context.globalAlpha = alpha;
+
+    this.context.drawImage(image, 0, 0, width, height);
+    this.context.restore();
+  }
+
+  drawBlock(color, x, y, width, height, angle, alpha) {
+    //draw a block on the cavas at x, y with width and height and rotation angle and alpha
+    this.context.save();
+    this.context.translate(x, y);
+    this.context.rotate(-angle);
+    this.context.globalAlpha = alpha;
+    this.context.fillStyle = color;
+    this.context.fillRect(0, 0, width, height);
+    this.context.restore();
   }
 
   drawText(text, x, y, size, color = "black", font = "Arial") {
@@ -45,4 +64,4 @@ export class Renderer {
   }
 }
 
-//export const Renderer = new Renderer(); // Exporting an instance of the Renderer
+export const Renderer = new RendererClass(); // Exporting an instance of the Renderer
