@@ -21,7 +21,7 @@
  * The Helicity.ai Team 🚀
  */
 
-export class Rendererr {
+export class Renderer {
   constructor() {
     this.canvas = document.getElementById("myCanvas");
     //change canvas size to 1280x720
@@ -45,4 +45,4 @@ export class Rendererr {
   }
 }
 
-export const Renderer = new Rendererr(); // Exporting an instance of the Renderer
+//export const Renderer = new Renderer(); // Exporting an instance of the Renderer
