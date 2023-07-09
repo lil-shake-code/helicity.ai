@@ -28,10 +28,24 @@ class RendererClass {
     this.canvas.width = 1280;
     this.canvas.height = 720;
     this.context = this.canvas.getContext("2d");
+    //set a background image for the canvas
+    this.background = new Image();
+    this.background.src = "";
   }
 
   clear() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  drawBackground() {
+    if (this.background.src === "") return;
+    this.context.drawImage(
+      this.background,
+      0,
+      0,
+      this.canvas.width,
+      this.canvas.height
+    );
   }
 
   drawImage(image, x, y, width, height, angle, alpha) {

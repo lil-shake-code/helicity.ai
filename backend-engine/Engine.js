@@ -50,6 +50,9 @@ export class Engine {
     // Clear the canvas before rendering the new frame
     EngineRenderer.clear();
 
+    // Draw the background
+    EngineRenderer.drawBackground();
+
     // Update and render game objects
     for (let obj of this.gameObjects) {
       obj.update(deltaTime);
