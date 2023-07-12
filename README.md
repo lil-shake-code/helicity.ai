@@ -6,6 +6,9 @@ Hello and welcome, dear Open Source contributor! :blush: :wave:
 
 I'm thrilled to have you here. My name is Abhishek and I'm the sole creator of the Helicity.ai project, an intuitive, and fun game engine that I've poured countless hours into building.
 
+#Documentation
+Please access the detailed docs here. https://helicity.gitbook.io/docs/
+
 ## About this Repository :books:
 
 In this repository, you'll find the open source part of Helicity.ai's game engine. You can copy all the code from the helicity.ai code editor and paste it into the `Main.js` file here.
