@@ -23,6 +23,8 @@
 
 import { Game } from "./Engine.js";
 import { Renderer } from "./Renderer.js";
+import RigidBody from "./rigidbody.js";
+import Vector2 from "./vector2.js";
 
 var savedImages = {};
 
@@ -89,12 +91,18 @@ export class GameObject {
         this.image.loaded = true;
       };
     }
+    // Initialize the Rigidbody
+    this.rigidbody = new RigidBody(new Vector2(x, y), new Vector2(0, 0), 1);
 
     Game.addGameObject(this);
   }
 
   update(deltaTime) {
     // Overridden by child classes
+
+    const { position, velocity } = this.rigidbody;
+    position.x = this.x;
+    position.y = this.y;
   }
 
   render() {
