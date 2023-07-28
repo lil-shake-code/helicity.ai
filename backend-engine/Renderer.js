@@ -24,9 +24,9 @@
 class RendererClass {
   constructor() {
     this.canvas = document.getElementById("myCanvas");
-    //change canvas size to 1280x720
-    this.canvas.width = 1280;
-    this.canvas.height = 720;
+    //change canvas size to 500 by 500
+    this.canvas.width = 500;
+    this.canvas.height = 500;
     this.context = this.canvas.getContext("2d");
     //set a background image for the canvas
     this.background = new Image();
@@ -39,6 +39,7 @@ class RendererClass {
 
   drawBackground() {
     if (this.background.src === "") return;
+    if (this.background.loaded === false) return;
     this.context.drawImage(
       this.background,
       0,
@@ -51,13 +52,17 @@ class RendererClass {
   drawImage(image, x, y, width, height, angle, alpha) {
     //draw an image on the cavas at x, y with width and height and rotation angle and alpha
     //origin is not at the center of the image, but at the top left corner
-    this.context.save();
-    this.context.translate(x, y);
-    this.context.rotate(-angle);
-    this.context.globalAlpha = alpha;
+    //image is an instance of Image
+    if (image) {
+      if (image.loaded === false) return;
+      this.context.save();
+      this.context.translate(x, y);
+      this.context.rotate(-angle);
+      this.context.globalAlpha = alpha;
 
-    this.context.drawImage(image, 0, 0, width, height);
-    this.context.restore();
+      this.context.drawImage(image, 0, 0, width, height);
+      this.context.restore();
+    }
   }
 
   drawBlock(color, x, y, width, height, angle, alpha) {
@@ -75,6 +80,52 @@ class RendererClass {
     this.context.font = `${size}px ${font}`;
     this.context.fillStyle = color;
     this.context.fillText(text, x, y);
+  }
+
+  setBackground(query) {
+    //if renderer has a "lookup:" in the src of the background image, call the lookup function
+    if (query.includes("lookup:")) {
+      var requestedQuery = query.split("lookup:")[1];
+      //make a post request. this is in html to use XMLHttpRequest
+      var xhr = new XMLHttpRequest();
+      xhr.open(
+        "POST",
+        "https://us-central1-ai-game-maker.cloudfunctions.net/api/Image",
+        true
+      );
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.send(
+        JSON.stringify({
+          userPrompt: requestedQuery,
+        })
+      );
+
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          //console.log(xhr.responseText);
+
+          //get the imageURL from the response
+          var imageURL = JSON.parse(xhr.responseText).image_url;
+          this.background = new Image();
+          this.background.src = imageURL;
+          this.background.onload = () => {
+            this.background.loaded = true;
+          };
+          this.background.onerror = () => {
+            console.error(`Error loading background image ${query}`);
+          };
+        }
+      };
+    } else {
+      this.background = new Image();
+      this.background.src = query;
+      this.background.onload = () => {
+        this.background.loaded = true;
+      };
+      this.background.onerror = () => {
+        console.error(`Error loading background image ${query}`);
+      };
+    }
   }
 }
 

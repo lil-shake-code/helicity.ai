@@ -13,6 +13,8 @@ export class Engine {
     requestAnimationFrame(this.loop.bind(this));
   }
 
+  gameLoop() {}
+
   stop() {
     this.isRunning = false;
   }
@@ -34,6 +36,9 @@ export class Engine {
       obj.update(deltaTime);
       obj.render();
     }
+
+    //custom new game loop
+    this.gameLoop();
 
     // Update the lastTime for the next frame
     this.lastTime = currentTime;

@@ -32,11 +32,24 @@ export class GameObject {
   xscale = 1;
   yscale = 1;
   alpha = 1;
-  constructor(x, y, width, height, type, imageSrc) {
+  constructor(x, y, width, height, type, imageSrc, angle) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
+    //if type arguemnt is not provided, set it to "default"
+    if (type == undefined) {
+      type = "default";
+    }
+    //if imageSrc arguemnt is not provided, set it to ""
+    if (imageSrc == undefined) {
+      imageSrc = "";
+    }
+    //if angle arguemnt is not provided, set it to 0
+    if (angle == undefined) {
+      angle = 0;
+    }
+    this.angle = angle;
     this.type = type; // can be Used for collision detection
     this.image = new Image();
     this.image.loaded = false;
@@ -82,14 +95,16 @@ export class GameObject {
       }
     } else {
       this.imageSrc = imageSrc;
-      this.image = new Image();
-      this.image.src = imageSrc;
-      this.image.onerror = () => {
-        console.error(`Error loading image ${this.imageSrc}`);
-      };
-      this.image.onload = () => {
-        this.image.loaded = true;
-      };
+      if (this.imageSrc) {
+        this.image = new Image();
+        this.image.src = imageSrc;
+        this.image.onerror = () => {
+          console.error(`Error loading image in Game Object ${this.imageSrc}`);
+        };
+        this.image.onload = () => {
+          this.image.loaded = true;
+        };
+      }
     }
     // Initialize the Rigidbody
     this.rigidbody = new RigidBody(new Vector2(x, y), new Vector2(0, 0), 1);
@@ -113,7 +128,7 @@ export class GameObject {
         this.y,
         this.width * this.xscale,
         this.height * this.yscale,
-        this.angle,
+        (-this.angle * Math.PI) / 180,
         this.alpha
       );
     } else {
@@ -124,7 +139,7 @@ export class GameObject {
         this.y,
         this.width * this.xscale,
         this.height * this.yscale,
-        this.angle,
+        (-this.angle * Math.PI) / 180,
         this.alpha
       );
     }
